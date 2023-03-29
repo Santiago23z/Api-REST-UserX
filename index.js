@@ -33,7 +33,7 @@ app.use('/api/dashboard', verifyToken, dashboardRoutes)
 
 
 app.get('/', (req, res) => {
-  res.json({ mensaje: 'My Auth Api Rest' })
+  res.json({ mensaje: 'VALENTINA CHUPEME EL CHIMBO' })
 })
 
 const PORT = process.env.PORT || 4000
