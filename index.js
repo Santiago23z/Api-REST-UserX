@@ -33,7 +33,7 @@ app.use('/api/dashboard', verifyToken, dashboardRoutes)
 
 
 app.get('/', (req, res) => {
-  res.json({ mensaje: 'VALENTINA CHUPEME EL CHIMBO' })
+  res.json({ mensaje: 'Base de datos conectada' })
 })
 
 const PORT = process.env.PORT || 4000
