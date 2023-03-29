@@ -5,10 +5,8 @@ const dashboardRoutes = require('./routes/dashboard')
 const verifyToken = require('./routes/validate-token')
 const cors = require('cors')
 require('dotenv').config()
-const name = "santizapataalvares"
-const pass = "FSHWhqTCkQWcKhk8"
-const db = "AutUserX"
-const url = `mongodb+srv://${name}:${pass}@cluster0.izrjkfa.mongodb.net/${db}retryWrites=true&w=majority`
+
+const url = `mongodb+srv://${process.env.USERNAME}:${process.env.PASSWORD}@cluster0.izrjkfa.mongodb.net/${process.env.DB}retryWrites=true&w=majority`
 
 mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log("db is connect"))
