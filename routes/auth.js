@@ -37,7 +37,7 @@ router.post('/login', async (req, res) => {
     const payload = {
         id: user._id,
         iat : moment().unix(),
-        exp : moment().add(tokenExpiration, "seconds").unix()
+        exp : moment().add(tokenExpiration, "days").unix()
     }
 
     const token = jwt.sign(payload, secretKey)
