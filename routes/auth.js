@@ -30,29 +30,25 @@ router.post('/login', async (req, res) => {
     const validPassword = await bcrypt.compare(req.body.password, user.password)
     if(!validPassword) return res.status(400).json({error: 'Constraseña invalida'})
 
+    const secretKey = process.env.JWT_SECRET_KEY || 'default_secret_key' // Clave secreta para JWT
 
+    const tokenExpiration = 14 * 24 * 60 * 60 // 14 días en segundos
 
     const payload = {
         id: user._id,
-        iat : moment(),
-        exp : moment().add(14, "days").unix()
+        iat : moment().unix(),
+        exp : moment().add(tokenExpiration, "seconds").unix()
     }
 
-
-    function signToken (payload, token) {
-        return jwt.sign(payload, token)
-    }
-
-    const token = signToken(payload, process.env.MI_SECRET_TOKEN)
+    const token = jwt.sign(payload, secretKey)
 
     console.log(token);
 
-    
     res.set('Authorization', `Bearer ${token}`);
     res.json({
         error: null,
         data: { token },
-        message: 'Bienveo'
+        message: 'Bienvenido'
     });
 })
 
