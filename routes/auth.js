@@ -30,7 +30,7 @@ router.post('/login', async (req, res) => {
     const validPassword = await bcrypt.compare(req.body.password, user.password)
     if(!validPassword) return res.status(400).json({error: 'Constraseña invalida'})
 
-    const secretKey = process.env.JWT_SECRET_KEY || 'default_secret_key' // Clave secreta para JWT
+    const secretKey = process.env.MI_SECRET_TOKEN; // Clave secreta para JWT
 
     const tokenExpiration = 14 * 24 * 60 * 60 // 14 días en segundos
 
