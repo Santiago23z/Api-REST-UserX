@@ -49,11 +49,11 @@ router.post('/login', async (req, res) => {
 
     
     res.set('Authorization', `Bearer ${token}`);
-    res.json({
-        error: null,
-        data: { token },
-        message: 'Bienveo'
-    });
+    // res.json({
+    //     error: null,
+    //     data: { token },
+    //     message: 'Bienveo'
+    // });
 })
 
 
