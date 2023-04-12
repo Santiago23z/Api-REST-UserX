@@ -39,7 +39,6 @@ const DatosUsuarioSchema = new mongoose.Schema({
     rightpad: Number,
     grids: [{
         id: String,
-        type: String,
         sizeGrid: Number,
         type: String,
     }],
