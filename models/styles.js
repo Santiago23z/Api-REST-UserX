@@ -40,11 +40,8 @@ const DatosUsuarioSchema = new mongoose.Schema({
     grids: [{
         id: String,
         type: String,
-        countColumnsAndRows: Number,
-        Typos: String,
-        width: Number,
-        Gutter: String,
-        marginColumnsAndRows: String
+        sizeGrid: Number,
+        type: String,
     }],
     colorsFill: [Number],
     opacityFill: String,
