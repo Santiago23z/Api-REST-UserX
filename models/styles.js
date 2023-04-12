@@ -37,11 +37,7 @@ const DatosUsuarioSchema = new mongoose.Schema({
     padtop: Number,
     bottomPad: Number,
     rightpad: Number,
-    grids: [{
-        id: String,
-        sizeGrid: Number,
-        type: String,
-    }],
+    grids: [],
     colorsFill: [Number],
     opacityFill: String,
     strokeColor: [Number],
