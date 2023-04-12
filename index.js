@@ -1,6 +1,7 @@
 const express = require('express')
 const authRoutes = require('./routes/auth.js')
 const mongoose = require('mongoose')
+const object = require("./routes/styles.js")
 const dashboardRoutes = require('./routes/dashboard')
 const verifyToken = require('./routes/validate-token')
 const cors = require('cors')
@@ -29,6 +30,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.use('/api/user', authRoutes)
+app.use("/api/objects", object)
 app.use('/api/dashboard', verifyToken, dashboardRoutes)
 
 
