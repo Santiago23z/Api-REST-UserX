@@ -3,24 +3,21 @@ const express = require('express');
 const router = express.Router()
 
 router.post("/objectsStyles", async (req, res) => {
-  try {
-    const data = new syles({
-      styleName: req.body.styleName,
-    });
+    try {
+        const data = new syles(req.body);
+        const objetsAVED = await data.save()
 
-    const objetsAVED = await data.save();
-
-    res.json({
-      data: objetsAVED,
-    });
-  } catch (error) {
-    res.status(400).send("No se pudo guardar");
-  }
-});
+        res.json({
+            data : objetsAVED
+        })
+    } catch (error) {
+        res.status(400).send("No se pudo guardar")
+    }
+})
 
 router.get("/objectStyles", async (req, res) => {
-    const usuarios = await syles.find({})
-    res.render
+    const usuarios = await User.find({})
+
     res.json(usuarios)
 })
 
