@@ -6,7 +6,6 @@ router.post("/objectsStyles", async (req, res) => {
   try {
     const data = new syles({
       styleName: req.body.styleName,
-      user: req.body.userId,
     });
 
     const objetsAVED = await data.save();
