@@ -43,7 +43,12 @@ const DatosUsuarioSchema = new mongoose.Schema({
     strokeColor: [Number],
     opacityStroke: String,
     grosorStroke: String,
-    positionStroke: String
+    positionStroke: String,
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        required: true,
+      }
 });
 
 const DatosUsuario = mongoose.model('DatosUsuario', DatosUsuarioSchema);
