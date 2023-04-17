@@ -4,6 +4,7 @@ const Joi = require('@hapi/joi')
 const bcrypt = require('bcrypt')
 const moment = require("moment")
 const jwt = require('jsonwebtoken')
+const passport = require('passport');
 
 const schemaRegister = Joi.object({
     email: Joi.string().min(6).max(255).required().email(),
@@ -17,40 +18,7 @@ const schemaLogin = Joi.object({
 })
 
 // LOGIN
-router.post('/login', async (req, res) => {
-    // Validaciones de login
-    const { error } = schemaLogin.validate(req.body)
-    if(error) return res.status(400).json({error: error.details[0].message})
-    
-    // Validaciond e existencia
-    const user = await User.findOne({email: req.body.email})
-    if(!user) return res.status(400).json({error: 'Usuario no encontrado'})
-
-    // Validacion de password en la base de datos
-    const validPassword = await bcrypt.compare(req.body.password, user.password)
-    if(!validPassword) return res.status(400).json({error: 'Constraseña invalida'})
-
-    const secretKey = process.env.MI_SECRET_TOKEN; // Clave secreta para JWT
-
-    const tokenExpiration = 14 * 24 * 60 * 60 // 14 días en segundos
-
-    const payload = {
-        id: user._id,
-        iat : moment().unix(),
-        exp : moment().add(tokenExpiration, "days").unix()
-    }
-
-    const token = jwt.sign(payload, secretKey)
-
-    console.log(token);
-
-    res.set('Authorization', `Bearer ${token}`);
-    res.json({
-        error: null,
-        data: { token },
-        message: 'Bienvenido'
-    });
-})
+router.post('/login', passport.authenticate("local")) 
 
 
 // REGISTER
