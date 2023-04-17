@@ -45,7 +45,9 @@ const DatosUsuarioSchema = new mongoose.Schema({
     grosorStroke: String,
     positionStroke: String,
     user: {
-        type: String
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        default: null
     }
 });
 
