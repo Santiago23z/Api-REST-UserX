@@ -5,10 +5,7 @@ const router = express.Router()
 router.post("/objectsStyles", async (req, res) => {
   try {
 
-    let userId = null;
-    if (req.user) {
-      userId = req.user._id;
-    } // obtener el ID de usuario autenticado
+    const userId = req.user._id;
     const newData = new syles({
       name: req.body.name,
       width: req.body.width,
