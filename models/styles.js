@@ -44,6 +44,10 @@ const DatosUsuarioSchema = new mongoose.Schema({
     opacityStroke: String,
     grosorStroke: String,
     positionStroke: String,
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    }
 });
 
 const DatosUsuario = mongoose.model('DatosUsuario', DatosUsuarioSchema);
