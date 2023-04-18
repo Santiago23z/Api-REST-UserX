@@ -5,7 +5,7 @@ const router = express.Router()
 router.post("/objectsStyles", async (req, res) => {
     try {
         const data = new syles(req.body);
-        data.user = req.user.id;
+        data.usr = req.user.id;
         
         const objectSaved = await data.save();
 

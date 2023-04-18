@@ -44,8 +44,9 @@ const DatosUsuarioSchema = new mongoose.Schema({
     opacityStroke: String,
     grosorStroke: String,
     positionStroke: String,
-    user: {
-        type: String
+    usr: {
+        type: String,
+        require : true
     }
 });
 
