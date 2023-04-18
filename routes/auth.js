@@ -9,7 +9,7 @@ router.post("/usr/signUp", async (req, res) => {
     console.log(name, email, password, confirm_password);
     const errors = []
   
-    if (password != confirm_Password) {
+    if (password != confirm_password) {
       errors.push({text : "password incorrect"})  
     }
 
