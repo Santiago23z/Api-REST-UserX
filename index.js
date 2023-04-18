@@ -40,7 +40,7 @@ app.use(passport.session())
 
 
 app.use('/api/user', authRoutes)
-// app.use("/api/objects", object)
+app.use("/api/objects", object)
 // app.use('/api/dashboard', verifyToken, dashboardRoutes)
 
 
