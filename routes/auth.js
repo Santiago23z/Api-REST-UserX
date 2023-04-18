@@ -1,38 +1,97 @@
-const express = require('express');
-const router = express.Router()
-const User = require('../models/user');
-const passport = require('passport');
+const router = require('express').Router()
+const User = require('../models/user')
+const Joi = require('@hapi/joi')
+const bcrypt = require('bcrypt')
+const moment = require("moment")
+const jwt = require('jsonwebtoken')
 
-router.post("/usr/signUp", async (req, res) => {
-    console.log(req.body);
-    const { name, email, password, confirm_password  } = req.body
-    console.log(name, email, password, confirm_password);
-    const errors = []
-  
-    if (password != confirm_password) {
-      errors.push({text : "password incorrect"})  
+const schemaRegister = Joi.object({
+    email: Joi.string().min(6).max(255).required().email(),
+    password: Joi.string().min(6).max(1024).required()
+})
+
+// Esquema del login
+const schemaLogin = Joi.object({
+    email: Joi.string().min(6).max(255).required().email(),
+    password: Joi.string().min(6).max(1024).required()
+})
+
+// LOGIN
+router.post('/login', async (req, res) => {
+    // Validaciones de login
+    const { error } = schemaLogin.validate(req.body)
+    if(error) return res.status(400).json({error: error.details[0].message})
+    
+    // Validaciond e existencia
+    const user = await User.findOne({email: req.body.email})
+    if(!user) return res.status(400).json({error: 'Usuario no encontrado'})
+
+    // Validacion de password en la base de datos
+    const validPassword = await bcrypt.compare(req.body.password, user.password)
+    if(!validPassword) return res.status(400).json({error: 'Constraseña invalida'})
+
+    const secretKey = process.env.MI_SECRET_TOKEN; // Clave secreta para JWT
+
+    const tokenExpiration = 14 * 24 * 60 * 60 // 14 días en segundos
+
+    const payload = {
+        id: user._id,
+        iat : moment().unix(),
+        exp : moment().add(tokenExpiration, "days").unix()
     }
 
-    if (name.length < 4) {
-        errors.push({Text : "Name must be greather than 4 characters"})
+    const token = jwt.sign(payload, secretKey)
+
+    console.log(token);
+
+    res.set('Authorization', `Bearer ${token}`);
+    res.json({
+        error: null,
+        data: { token },
+        message: 'Bienvenido'
+    });
+})
+
+
+// REGISTER
+router.post('/register', async (req, res) => {
+
+    const { error } = schemaRegister.validate(req.body)
+
+    if (error) {
+        return res.status(400).json(
+            { error: error.details[0].message }
+        )
     }
 
-    if (errors.length > 0) {
-        console.log("Hay errores");
-        console.log(errors);
-    } else {
-        const Useremail =  await User.findOne({email : email})
-        if (Useremail) {
-            console.log("Email en uso");
-        }
-        const newUser = new User({name, email, password})
-        newUser.password = await newUser.ecryptPassword(password)
-        await newUser.save()
+    const isEmailExist = await User.findOne({ email: req.body.email });
+    if (isEmailExist) {
+        return res.status(400).json(
+            {error: 'Email ya registrado'}
+        )
+    }
+
+    const salt = await bcrypt.genSalt(10)
+    const password = await bcrypt.hash(req.body.password, salt)
+
+    const user = new User({
+        email: req.body.email,
+        password: password
+    });
+    try {
+        const savedUser = await user.save()
+        res.json({
+            data: savedUser
+        })
+    } catch (error) {
+        res.status(400).json({error})
     }
 })
 
-router.post("/usr/signIN", passport.authenticate("local"), (req, res) => {
-    res.json(req.body)
-}), 
+router.get("/register", async (req, res) => {
+    const usuarios = await User.find({})
+
+    res.json(usuarios)
+})
 
 module.exports = router
