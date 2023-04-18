@@ -19,6 +19,11 @@ const userSchema = new Schema({
         minlength: 6
     },
 
+    confirm_password : {
+        type : String,
+        require: true,
+        minlength : 6
+    },
 
     date : {
         type : Date,
