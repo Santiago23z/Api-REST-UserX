@@ -5,8 +5,8 @@ const passport = require('passport');
 
 router.post("/usr/signUp", async (req, res) => {
     console.log(req.body);
-    const { name, email, password, confirm_Password  } = req.body
-    console.log(name, email, password, confirm_Password);
+    const { name, email, password, confirm_password  } = req.body
+    console.log(name, email, password, confirm_password);
     const errors = []
   
     if (password != confirm_Password) {
