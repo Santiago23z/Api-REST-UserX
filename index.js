@@ -31,7 +31,7 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use('/api/user', authRoutes)
 app.use("/api/objects", object)
-app.use('/api/dashboard', verifyToken, dashboardRoutes)
+app.use('/api/dashboard', verifyToken)
 
 
 app.get('/', (req, res) => {
