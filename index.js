@@ -6,7 +6,7 @@ const cors = require('cors')
 const session = require("express-session")
 const passport = require('passport');
 require('dotenv').config()
-// require('./config/helpers')
+require('./config/passport')
 
 const url = `mongodb+srv://${process.env.USERNAME}:${process.env.PASSWORD}@cluster0.izrjkfa.mongodb.net/${process.env.DB}retryWrites=true&w=majority`
 

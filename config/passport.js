@@ -12,6 +12,7 @@ passport.use(new passport_local({
     } else {
        const match = await user.matchPassword(password);
        if (match) {
+        console.log("peneee");
         return done(null, user, {message : "access"})
         
        } else {
