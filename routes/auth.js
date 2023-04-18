@@ -8,9 +8,7 @@ router.post("/usr/signUp", async (req, res) => {
     const { name, email, password, confirm_Password  } = req.body
     console.log(name, email, password, confirm_Password);
     const errors = []
-    if (password != confirm_Password) {
-        errors.push({Text : "do not match"})
-    }
+  
 
     if (name.length < 4) {
         errors.push({Text : "Name must be greather than 4 characters"})
