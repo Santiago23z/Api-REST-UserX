@@ -9,6 +9,9 @@ router.post("/usr/signUp", async (req, res) => {
     console.log(name, email, password, confirm_Password);
     const errors = []
   
+    if (password != confirm_Password) {
+      errors.push({text : "password incorrect"})  
+    }
 
     if (name.length < 4) {
         errors.push({Text : "Name must be greather than 4 characters"})
@@ -28,8 +31,6 @@ router.post("/usr/signUp", async (req, res) => {
     }
 })
 
-router.post("/usr/signIN", passport.authenticate("local"), (req, res) => {
-    
-})
+router.post("/usr/signIN", passport.authenticate("local"))
 
 module.exports = router

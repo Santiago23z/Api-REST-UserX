@@ -1,38 +1,25 @@
-const mongoose = require('mongoose')
-const { Schema } = mongoose
-const bcrypt = require('bcrypt')
+import mongoose from "mongoose";
+import bcrypt from "bcrypt";
 
-const userSchema = new Schema({
-    name: {
-        type : String,
-        require: true
-    },
-    email: {
-        type: String,
-        require: true,
-        min: 6,
-        max: 255
-    },
-    password: {
-        type: String,
-        require: true,
-        minlength: 6
-    },
+const UserSchema = new mongoose.Schema(
+  {
+    name: { type: String, trim: true },
+    email: { type: String, required: true, unique: true, trim: true },
+    password: { type: String, required: true },
+  },
+  {
+    timestamps: true,
+    versionKey: false,
+  }
+);
 
-    date : {
-        type : Date,
-        default : Date.now
-    }
-})
-
-userSchema.methods.ecryptPassword = async (password) => {
-   const salt = await bcrypt.genSalt(10)
-   const hash = bcrypt.hash(password, salt)
-   return hash;
+UserSchema.methods.encryptPassword = async (password) => {
+  const salt = await bcrypt.genSalt(10);
+  return await bcrypt.hash(password, salt);
 };
 
-userSchema.methods.matchPassword = async  function (password) {
-    return await bcrypt.compare(password, this.password)
-}
+UserSchema.methods.matchPassword = async function (password) {
+  return await bcrypt.compare(password, this.password);
+};
 
-module.exports = mongoose.model('User', userSchema)
+export default mongoose.model("User", UserSchema);
