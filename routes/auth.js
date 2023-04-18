@@ -31,6 +31,8 @@ router.post("/usr/signUp", async (req, res) => {
     }
 })
 
-router.post("/usr/signIN", passport.authenticate("local"))
+router.post("/usr/signIN", passport.authenticate("locals"), (req, res) => {
+    res.json(req.body)
+}), 
 
 module.exports = router
