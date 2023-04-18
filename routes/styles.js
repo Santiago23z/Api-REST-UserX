@@ -5,17 +5,13 @@ const router = express.Router()
 router.post("/objectsStyles", async (req, res) => {
     try {
         const data = new syles(req.body);
-        const user = req.params.id;
-        console.log(user);
-        const { id } = req.params;
-        data.user = id
-        const objetsAVED = await data.save()
+        data.user = req.user.id;
+        
+        const objectSaved = await data.save();
 
-        res.json({
-            data : objetsAVED
-        })
+        res.json({ data: objectSaved });
     } catch (error) {
-        res.status(400).send("No se pudo guardar")
+        res.status(400).send("No se pudo guardar");
     }
 })
 

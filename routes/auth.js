@@ -1,66 +1,36 @@
-const router = require('express').Router()
-const User = require('../models/user')
-const Joi = require('@hapi/joi')
-const bcrypt = require('bcrypt')
-const moment = require("moment")
-const jwt = require('jsonwebtoken')
+const express = require('express');
+const router = express.Router()
+const User = require('../models/user');
 const passport = require('passport');
 
-const schemaRegister = Joi.object({
-    email: Joi.string().min(6).max(255).required().email(),
-    password: Joi.string().min(6).max(1024).required()
-})
-
-// Esquema del login
-const schemaLogin = Joi.object({
-    email: Joi.string().min(6).max(255).required().email(),
-    password: Joi.string().min(6).max(1024).required()
-})
-
-// LOGIN
-router.post('/login', passport.authenticate("local")) 
-
-
-// REGISTER
-router.post('/register', async (req, res) => {
-
-    const { error } = schemaRegister.validate(req.body)
-
-    if (error) {
-        return res.status(400).json(
-            { error: error.details[0].message }
-        )
+router.post("/usr/signUp", async (req, res) => {
+    console.log(req.body);
+    const { name, email, password, confirm_Password  } = req.body
+    const errors = []
+    if (password != confirm_Password) {
+        errors.push({Text : "do not match"})
     }
 
-    const isEmailExist = await User.findOne({ email: req.body.email });
-    if (isEmailExist) {
-        return res.status(400).json(
-            {error: 'Email ya registrado'}
-        )
+    if (name.length < 4) {
+        errors.push({Text : "Name must be greather than 4 characters"})
     }
 
-    const salt = await bcrypt.genSalt(10)
-    const password = await bcrypt.hash(req.body.password, salt)
-
-    const user = new User({
-        email: req.body.email,
-        password: password
-    });
-    try {
-        const savedUser = await user.save()
-        res.json({
-            data: savedUser
-        })
-    } catch (error) {
-        res.status(400).json({error})
+    if (errors.length > 0) {
+        console.log("Hay errores");
+        console.log(errors);
+    } else {
+        const Useremail =  await User.findOne({email : email})
+        if (Useremail) {
+            console.log("Email en uso");
+        }
+        const newUser = new User({name, email, password})
+        newUser.password = await newUser.ecryptPassword(password)
+        await newUser.save()
     }
 })
 
-router.get("/register", async (req, res) => {
-    const usuarios = await User.find({})
-
-    res.json(usuarios)
+router.post("/usr/signIN", passport.authenticate("local"), (req, res) => {
+    
 })
 
 module.exports = router
-
