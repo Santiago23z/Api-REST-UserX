@@ -1,4 +1,4 @@
-const syles = require("../models/styles")
+const model = require("../models/styles")
 const express = require('express');
 const router = express.Router()
 
@@ -27,7 +27,7 @@ router.post("/objectsStyles", async (req, res) => {
 })
 
 router.get("/objectStyles", async (req, res) => {
-    const usuarios = await syles.find({})
+    const usuarios = await model.find({})
 
     res.json(usuarios)
 })
