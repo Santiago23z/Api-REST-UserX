@@ -5,6 +5,7 @@ const rutaProtected = require('./routes/dashboard')
 const verifyToken = require('./routes/validate-token')
 const cors = require('cors')
 require('dotenv').config()
+const admin = require("./routes/dashboard.js")
 
 const url = `mongodb+srv://${process.env.USERNAME}:${process.env.PASSWORD}@cluster0.izrjkfa.mongodb.net/${process.env.DB}retryWrites=true&w=majority`
 
