@@ -6,8 +6,10 @@ const moment = require("moment")
 const jwt = require('jsonwebtoken')
 
 const schemaRegister = Joi.object({
+    name: Joi.string().min(5).max(255).required(),
     email: Joi.string().min(6).max(255).required().email(),
-    password: Joi.string().min(6).max(1024).required()
+    password: Joi.string().min(6).max(1024).required(),
+    confirm_password: Joi.string().min(6).max(1024).required()
 })
 
 // Esquema del login
@@ -34,22 +36,27 @@ router.post('/login', async (req, res) => {
 
     const tokenExpiration = 14 * 24 * 60 * 60 // 14 días en segundos
 
-    const payload = {
-        id: user._id,
+    // const payload = {
+    //     id: user._id,
+    //     iat : moment().unix(),
+    //     exp : moment().add(tokenExpiration, "days").unix()
+    // }
+
+    // const token = jwt.sign(payload, secretKey)
+
+    // console.log(token);
+    const token = jwt.sign({
+        name : user.name,
+        id : user._id,
         iat : moment().unix(),
         exp : moment().add(tokenExpiration, "days").unix()
-    }
+    }, secretKey)
 
-    const token = jwt.sign(payload, secretKey)
-
-    console.log(token);
-
-    res.set('Authorization', `Bearer ${token}`);
-    res.json({
-        error: null,
-        data: { token },
-        message: 'Bienvenido'
-    });
+    res.header("auth-tokens", token).json({
+        error : null,
+        data : {token},
+        message : "welcome"
+    })
 })
 
 
@@ -71,10 +78,13 @@ router.post('/register', async (req, res) => {
         )
     }
 
+    if (req.body.password != req.body.confirm_password) return res.status(400).json({text : "passwords do not match"})
+
     const salt = await bcrypt.genSalt(10)
     const password = await bcrypt.hash(req.body.password, salt)
 
     const user = new User({
+        name : req.body.name,
         email: req.body.email,
         password: password
     });

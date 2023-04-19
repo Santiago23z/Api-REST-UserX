@@ -1,15 +1,35 @@
-const jwt = require('jsonwebtoken')
+const syles = require("../models/styles")
+const express = require('express');
+const router = express.Router()
 
-const verifyToken = (req, res, next) => {
-    const token = req.header('auth-token')
-    if(!token) return res.status(401).json({error: 'Acceso denegado'})
-    try {
-        const verified = jwt.verify(token, process.env.TOKEN_SECRET)
-        req.user = verified
-        next()
-    } catch (error){
-        res.status(400).json({error: 'Token no valido, acceso denegado'})
+
+router.get('/recurso-protegido', (req, res) => {
+   res.json({
+    error : null,
+    data : {
+        title : "Bienvenido",
+        user : req.user
     }
-}
+   })
+});
 
-module.exports = verifyToken
+router.post("/objectsStyles", async (req, res) => {
+    try {
+        const data = new syles(req.body);
+        data.usr = req.user.id;
+        
+        const objectSaved = await data.save();
+
+        res.json({ data: objectSaved });
+    } catch (error) {
+        res.status(400).send("No se pudo guardar");
+    }
+})
+
+router.get("/objectStyles", async (req, res) => {
+    const usuarios = await syles.find({})
+
+    res.json(usuarios)
+})
+
+module.exports = router
