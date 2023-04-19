@@ -16,7 +16,7 @@ router.get('/recurso-protegido', (req, res) => {
 router.post("/objectsStyles", async (req, res) => {
     try {
         const data = new model(req.body);
-        data.usr = req.user.id;
+        // data.usr = req.user.id;
         
         const objectSaved = await data.save();
 
