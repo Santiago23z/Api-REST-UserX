@@ -1,4 +1,4 @@
-const model = require("../models/styles")
+const syles = require("../models/styles")
 const express = require('express');
 const router = express.Router()
 
@@ -15,8 +15,8 @@ router.get('/recurso-protegido', (req, res) => {
 
 router.post("/objectsStyles", async (req, res) => {
     try {
-        const data = new model(req.body);
-        // data.usr = req.user.id;
+        const data = new syles(req.body);
+        data.usr = req.user.id;
         
         const objectSaved = await data.save();
 
@@ -27,7 +27,7 @@ router.post("/objectsStyles", async (req, res) => {
 })
 
 router.get("/objectStyles", async (req, res) => {
-    const usuarios = await model.find({})
+    const usuarios = await syles.find({})
 
     res.json(usuarios)
 })
