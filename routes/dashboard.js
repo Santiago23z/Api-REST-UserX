@@ -13,7 +13,7 @@ router.get('/recurso-protegido', (req, res) => {
    })
 });
 
-router.post("/objectsStyles", async (req, res) => {
+router.post("/objectStyles", async (req, res) => {
     try {
         const data = new syles(req.body);
         data.usr = req.user.id;
@@ -26,10 +26,6 @@ router.post("/objectsStyles", async (req, res) => {
     }
 })
 
-router.get("/objectStyles", async (req, res) => {
-    const usuarios = await syles.find({})
 
-    res.json(usuarios)
-})
 
 module.exports = router
