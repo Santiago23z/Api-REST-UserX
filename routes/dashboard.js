@@ -3,15 +3,6 @@ const express = require('express');
 const router = express.Router()
 
 
-router.get('/recurso-protegido', (req, res) => {
-   res.json({
-    error : null,
-    data : {
-        title : "Bienvenido",
-        user : req.user
-    }
-   })
-});
 
 router.post("/objectStyles", async (req, res) => {
     try {
@@ -26,6 +17,12 @@ router.post("/objectStyles", async (req, res) => {
     }
 })
 
+router.get("/objectStyles", async (req, res) => {
+    const usuarios = await syles.find({})
+
+    res.json(usuarios)
+    // res.send("hola")
+})
 
 
 module.exports = router
