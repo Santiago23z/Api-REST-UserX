@@ -18,7 +18,7 @@ router.post("/objectStyles", async (req, res) => {
 })
 
 router.get("/objectStyles", async (req, res) => {
-    const usuarios = await syles.find({})
+    const usuarios = await syles.find({user : req.user.id})
 
     res.json(usuarios)
     // res.send("hola")
