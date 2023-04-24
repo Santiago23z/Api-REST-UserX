@@ -59,6 +59,10 @@ router.post('/login', async (req, res) => {
     })
 })
 
+router.get("/login", (req, res) => {
+    const users = User.find({})
+    res.json(users)
+})
 
 // REGISTER
 router.post('/register', async (req, res) => {
