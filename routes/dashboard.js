@@ -24,6 +24,11 @@ router.get("/objectStyles", async (req, res) => {
     // res.send("hola")
 })
 
+router.get("/objectStyles:id", async (req, res) => {
+    const id = await syles.findById(req.params.id)
+    res.json(id)
+})
+
 router.delete("/objectStyles:id", async (req, res) => {
     
     await syles.findByIdAndDelete(req.params.id)
